@@ -6,8 +6,6 @@ bool isKeyword(string s){
     ifstream keywords("keywords.txt");
     string key;
     while(getline(keywords, key)){
-        // cout << key << " " << s << " " << key.size() << " " << s.size() << endl;
-        // cout << key << endl;
         if(s == key){
             keywords.close();
             return true;
@@ -108,9 +106,9 @@ int main()
     while (getline(cin, s)) {
         if (isKeyword(s)) {
             cout << s << " is a keyword of c++\n";
-        } else if (isOperator(s)) {
+        }  else if (isOperator(s)) {
             cout << s << " is a operator of c++\n";
-        }else if (isConstant(s)) {
+        } else if (isConstant(s)) {
             continue;
         } else if (isIdentifier(s)) {
             cout << s << " is a identifier\n";
