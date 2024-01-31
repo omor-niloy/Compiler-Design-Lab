@@ -1,7 +1,13 @@
 # Compiler-Design-Lab
 
-# For Linux user
-Change .txt files with these commands
+# Linux user
+Update .txt files with this command
 ```
-sed -i 's/\r//g' file_name
+sed -i 's/\r//g' file_name.txt
+```
+
+# Windowa user
+Update .txt files with this commad
+```
+sed -i 's/$/\r/' file_name.txt
 ```
