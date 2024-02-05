@@ -24,6 +24,7 @@ void find_first(char ch){
     if (first.count(ch) != 0) {
         return;
     } 
+
     for (auto s : grammar[ch]) {
         if (s == "") {
             first[ch].insert('e');
@@ -56,6 +57,7 @@ void find_follow(char ch){
         return;
     }
     if (ch == start_symbol) {
+        // 1. FOLLOW(S) = { $ }   // where S is the starting Non-Terminal
         follow[ch].insert('$');
     }
     for (auto it : grammar) {
@@ -63,6 +65,7 @@ void find_follow(char ch){
             for (int i = 0; i < s.size(); i++) {
                 if (s[i] == ch) {
                     if (i == s.size()-1) {
+                        //3. If A->pB is a production, then everything in FOLLOW(A) is in FOLLOW(B).
                         if (it.first != ch) {
                             find_follow(it.first);
                             for (auto i : follow[it.first]) {
@@ -70,7 +73,9 @@ void find_follow(char ch){
                             }
                         }
                     } else {
+
                         if (isupper(s[i+1])) {
+                            // 2. If A -> pBq is a production, where p, B and q are any grammar symbols, then everything in FIRST(q)  except Є is in FOLLOW(B).
                             find_first(s[i+1]);
                             for (auto i : first[s[i+1]]) {
                                 if (i != 'e') {
@@ -78,6 +83,7 @@ void find_follow(char ch){
                                 }
                             }
                             if (first[s[i+1]].count('e') != 0) {
+                                //4. If A->pBq is a production and FIRST(q) contains Є, then FOLLOW(B) contains { FIRST(q) – Є } U FOLLOW(A)
                                 if (it.first != ch) {
                                     find_follow(it.first);
                                     for (auto i : follow[it.first]) {
@@ -86,6 +92,7 @@ void find_follow(char ch){
                                 }
                             }
                         } else {
+                            // 2. If A -> pBq is a production, where p, B and q are any grammar symbols then everything in FIRST(q)  except Є is in FOLLOW(B).
                             follow[ch].insert(s[i+1]);
                         }
                     }
@@ -98,6 +105,7 @@ void find_follow(char ch){
 int main()
 {
     define_grammar();
+
     for (auto it : grammar) {
         find_first(it.first);
     }

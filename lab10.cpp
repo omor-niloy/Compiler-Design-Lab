@@ -6,11 +6,16 @@ using namespace std;
 map<char, vector<string>>grammar;
 string gap = "     ";
 
+char start_symbol = 'E';
+
 void define_grammar(){
     // S -> (L) | a
     // L -> L.S | S
     // grammar['L'] = {"L.S", "S"};
     // grammar['S'] = {"(L)", "a"};
+    
+    // grammar['E'] = {"EAE", "(E)", "i"};
+    // grammar['A'] = {"+", "-", "*", "/"};
 
     // E -> E+E 
     // E -> E*E 
@@ -34,6 +39,7 @@ void print_stack(stack<char>st){
 
 void can_reduce(stack<char>&st, string substr){
     int N = st.size();
+    // $E+E
     for (int i = N-1; i > 0; i--) {
         string s;
         for (int j = 0; j < i; j++) {
@@ -80,7 +86,7 @@ int main()
         
         bool AC = false;
         for (int i = 0; i < (int)s.size(); i++) {
-            if (s[i] == '$' && st.size() == 2) {
+            if (s[i] == '$' && st.top() == start_symbol && st.size() == 2){
                 cout << "Accepted" << endl;
                 AC = true;
                 break;

@@ -3,6 +3,8 @@ using namespace std;
 
 map<char, vector<string>>grammar;
 
+char start_symbol = 'E';
+
 void define_grammar(){
     // E -> EAE | (E) | i
     // A -> + | - | * | /
@@ -41,7 +43,7 @@ class ShiftReducingParsing{
         stack<char>st;
         st.push('$');
         for (int i = 0; i < (int)s.size(); i++) {
-            if (s[i] == '$' && st.size() == 2) {
+            if (s[i] == '$' && st.size() == 2 && st.top() == start_symbol) {
                 return true;
             }
             st.push(s[i]);
@@ -52,7 +54,9 @@ class ShiftReducingParsing{
 };
 
 bool isPureInt(string s){
-    for (int i = 0; i < s.size(); i++) {
+    if (!(s[0] >= '1' && s[0] <= '9'))
+        return false;
+    for (int i = 1; i < s.size(); i++) {
         if (!(s[i] >= '0' && s[i] <= '9'))
             return false;
     }
@@ -84,7 +88,7 @@ int main()
         string t, tmp;
         bool identifier_varifier = true;
         for (int i = 0; i < s.size(); i++) {
-            if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/') {
+            if (s[i] == '+' || s[i] == '-' || s[i] == '*' || s[i] == '/' || s[i] == '(' || s[i] == ')') {
                 if (tmp.size()) {
                     if (check_identifier(tmp)) {
                         t.push_back('i');
